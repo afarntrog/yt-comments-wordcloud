@@ -103,11 +103,11 @@ def create_wordcloud(yt_url):
         STOPWORDS.update(both_halves)
 
     # This will be the built in list of words that will not be included in the wordcloud
-    STOPWORDS.update(['quot', 'candidate', 'video','search_query','people', 'will', 'https', 'debate', 'br','href','watch', 'youtube',VIDEO_ID])
+    STOPWORDS.update(['quot', 'amp', 'candidate', 'video','search_query','people', 'will', 'https', 'debate', 'br','href','watch', 'youtube',VIDEO_ID])
     stopwords = STOPWORDS
-    print(f"The total number of comments ======= {total_comments}")
+    # print(f"The total number of comments ======= {total_comments}")
     text = open(path.join(d, 'wordcloud_text.txt')).read()
-    wordcloud = WordCloud(background_color='white',width=600, height=400, stopwords=stopwords).generate(text)
+    wordcloud = WordCloud(background_color='white',width=800, height=600, stopwords=stopwords).generate(text)
 
     # Display the generated image:
     # the matplotlib way:
@@ -118,7 +118,6 @@ def create_wordcloud(yt_url):
     plt.axis("off")
     # plt.savefig(path.join(d, 'wordcloud_pic.png'))
     # hello = plt.show()
-    print(type(plt))
 
 
     # New
