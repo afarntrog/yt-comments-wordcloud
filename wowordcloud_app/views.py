@@ -90,6 +90,9 @@ def create_wordcloud(yt_url):
                 write_file.write(this_item["topLevelComment"]["snippet"]["textDisplay"])
                 total_comments += 1
 
+            if total_comments >= 4000:
+                another_page = False
+
             if "nextPageToken" in response:
                 nextPageToken = response["nextPageToken"]
             else:
