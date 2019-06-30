@@ -12,6 +12,7 @@ google-api-python-client = "*"
 numpy = "*"
 matplotlib = "*"
 django-heroku = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
