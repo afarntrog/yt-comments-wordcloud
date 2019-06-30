@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        html {
+            font-size: 14px;
+            }
+        @media (min-width: 768px) {
+        html {
+            font-size: 16px;
+            }
+            }
+
+        .container {
+            max-width: 960px;
+            }
+
+        .pricing-header {
+            max-width: 700px;
+            }
+
+        .card-deck .card {
+            min-width: 220px;
+            }
+    </style>
+</head>
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a class="p-2 text-dark" href="#">Features</a>
+    <a class="p-2 text-dark" href="#">Enterprise</a>
+    <a class="p-2 text-dark" href="#">Support</a>
+    <a class="p-2 text-dark" href="#">Pricing</a>
+  </nav>
+  <a class="btn btn-outline-primary" href="#">Sign up</a>
+</div>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Pricing</h1>
+  <form id="youtube_url_form" action="{% url 'create_cloud' %}" method="POST" role="form" >{% csrf_token %}
+  <div class="input-group mb-3">
+        <input type="text" id="reason1" name="yt_url" class="form-control" placeholder="YouTube URL..." required>
+        <div class="input-group-append">
+          <input class="btn btn-outline-secondary" type="submit" value="Create!"></input>
+        </div>
+      </div>
+    </form>
+  <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+</div>
+
+<div class="container">
+
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 text-center font-weight-normal">Video Link: <a href="{{ url }}">{{ url }}</a></h4>
+      </div>
+      <div class="card-body">
+        <div class="text-center">
+            <img class="img-fluid rounded" src="{{ image }}" alt="">
+        </div>
+      </div>
+    </div>
+
+
+
+  <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+      <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+          <li><a class="text-muted" href="#">LinkedIn</a></li>
+          <li><a class="text-muted" href="#">Difficilis</a></li>
+          <li><a class="text-muted" href="#">Profile</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+    
+</body>
+</html>
+
