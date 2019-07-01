@@ -26,7 +26,7 @@ def create_wordcloud(yt_url):
     regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
     match = regex.match(yt_url)
     if not match:
-        print('no match')
+        return 'none'
     VIDEO_ID = match.group('id')
 
 
@@ -144,9 +144,12 @@ def display_wordcloud(request):
     # yt_url = 'https://www.youtube.com/watch?v=m1SS3hVdE0U'
     yt_url = request.POST.get('yt_url')
     image = create_wordcloud(yt_url)
-    context = {
-        'image': image,
-        'url': yt_url
-    }
+    # context = {
+    #     'image': image,
+    #     'url': yt_url
+    # }
+    # TODO: bring url functionality here, and only pass kosher url up
+    if image == 'none':
+        return HttpResponse("Not valid url")
     return HttpResponse(image)
     #return render(request, 'wowordcloud_app/result.html', context)
