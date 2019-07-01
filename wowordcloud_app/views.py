@@ -1,5 +1,4 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, HttpResponse
 # Create your views here.
 
 
@@ -8,6 +7,7 @@ def index(request):
 
 
 def create_wordcloud(yt_url):
+    print("CW")
 
 # Python code for youtube.commentThreads.list
 # See instructions for running these code samples locally:
@@ -90,8 +90,8 @@ def create_wordcloud(yt_url):
                 write_file.write(this_item["topLevelComment"]["snippet"]["textDisplay"])
                 total_comments += 1
 
-            if total_comments >= 4000:
-                another_page = False
+            # if total_comments >= 4000:
+            #     another_page = False
 
             if "nextPageToken" in response:
                 nextPageToken = response["nextPageToken"]
@@ -140,6 +140,7 @@ def create_wordcloud(yt_url):
 
 
 def display_wordcloud(request):
+    print("dC")
     # yt_url = 'https://www.youtube.com/watch?v=m1SS3hVdE0U'
     yt_url = request.POST.get('yt_url')
     image = create_wordcloud(yt_url)
@@ -147,4 +148,5 @@ def display_wordcloud(request):
         'image': image,
         'url': yt_url
     }
-    return render(request, 'wowordcloud_app/result.html', context)
+    return HttpResponse(image)
+    #return render(request, 'wowordcloud_app/result.html', context)
