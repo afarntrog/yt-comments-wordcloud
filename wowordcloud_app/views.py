@@ -2,25 +2,37 @@ from django.shortcuts import render, HttpResponse
 # Create your views here.
 
 
+
 def index(request):
-    return render(request, 'wowordcloud_app/index.html', context=None)
+    import os
+    from os import path
+    # Set the current directory
+    d = os.path.dirname(__file__)
+    with open(path.join(d,'logo_base64_image.txt'), 'r') as file:
+        logo_image = file.read().replace('\n', '')
+    with open(path.join(d,'sample_image64.txt'), 'r') as file:
+        sample_image = file.read().replace('\n', '')
+    context = {
+        'logo_image':logo_image,
+        'sample_image': sample_image 
+    }
+    return render(request, 'wowordcloud_app/index.html', context)
 
 
 def create_wordcloud(yt_url):
-    print("CW")
-
-# Python code for youtube.commentThreads.list
-# See instructions for running these code samples locally:
-# https://developers.google.com/explorer-help/guides/code_samples#python
-
+    import os
+    from os import path
     import json
     import googleapiclient.discovery
     from wordcloud import WordCloud, STOPWORDS
     import re
 
     import numpy as np
-    import os
-    from os import path
+# Python code for youtube.commentThreads.list
+# See instructions for running these code samples locally:
+# https://developers.google.com/explorer-help/guides/code_samples#python
+
+
     
     # Allow user to enter a url and we will grab the id with regex [https://gist.github.com/silentsokolov/f5981f314bc006c82a41]
     regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
@@ -130,18 +142,9 @@ def create_wordcloud(yt_url):
     string = base64.b64encode(imgdata.read())
 
     uri = 'data:image/png;base64,' + urllib.parse.quote(string)
-    # print(uri)
-    # with open(path.join(d, 'hello.txt'), 'w') as write_f:
-    #     write_f.write(uri)
     return uri
 
-# ANSWER https://stackoverflow.com/questions/56714856/how-can-i-show-wordcloud-in-html
-# THIS IS THE ANSWER
-
-
 def display_wordcloud(request):
-    print("dC")
-    # yt_url = 'https://www.youtube.com/watch?v=m1SS3hVdE0U'
     yt_url = request.POST.get('yt_url')
     image = create_wordcloud(yt_url)
     # context = {
