@@ -8,6 +8,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
     <!--jQuery-->
     <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -53,7 +56,6 @@
             }
 
     </style>
-
 <script language="JavaScript">
   $(document).ready(function() {
       // display overlay while the request is being processed
@@ -72,10 +74,23 @@
                   // $('#DIV_CONTAINING_FORM').html(response); // update the DIV 
                   $('#wordcloud_image').attr('src', response);
                   $('#wordcloud_download_image').attr('href', response);
+              },
+              error: function(response) {
+                $('#msgs').html("<div class='alert alert-danger text-center container'><strong>ERROR: </strong> "+response.responseJSON.error+"</div>");
               }
           });
           return false;
       });
+
+      // $user_agent = $_SERVER['HTTP_USER_AGENT']; //user browser
+      // $ip_address = $_SERVER["REMOTE_ADDR"];     // user ip adderss
+      // $page_name = $_SERVER["SCRIPT_NAME"];      // page the user looking
+      // $query_string = $_SERVER["QUERY_STRING"]; 
+      // alert($user_agent);
+      // alert('sdf');
+      // alert($ip_address);
+      // alert($page_name);
+      // alert($query_string)
   });
 </script>
 </head>
@@ -94,10 +109,9 @@
 
 <!-- This will prevent the user from clicking outside the modal to close it-->
 <script>
-$('modal').modal({backdrop: 'static', keyboard: false}); 
-//style="width: 3rem; height: 3rem;"
+$('modal').modal({backdrop: 'static', keyboard: false});
 </script>
-
+<div id="msgs" ></div>
 
   <div class="modal" id="loading" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -113,7 +127,6 @@ $('modal').modal({backdrop: 'static', keyboard: false});
         </div>
       </div>
     </div>
-
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
   <h1 class="display-4">YouTube Wordcloud</h1>

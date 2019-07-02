@@ -1,4 +1,7 @@
 from django.shortcuts import render, HttpResponse
+from .models import YoutubeUrl
+from django.contrib import messages
+from django.http import JsonResponse # for ajax resonse
 # Create your views here.
 
 
@@ -35,11 +38,13 @@ def create_wordcloud(yt_url):
 
     
     # Allow user to enter a url and we will grab the id with regex [https://gist.github.com/silentsokolov/f5981f314bc006c82a41]
-    regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
-    match = regex.match(yt_url)
-    if not match:
-        return 'none'
-    VIDEO_ID = match.group('id')
+    # regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
+    # match = regex.match(yt_url)
+    # if not match:
+    #     messages.success(request, f'ERROR: Please enter a valid YouTube URL')
+    #     return 'none'
+    # VIDEO_ID = match.group('id')
+    VIDEO_ID = yt_url
 
 
     # Disable OAuthlib's HTTPS verification when running locally.
@@ -145,14 +150,24 @@ def create_wordcloud(yt_url):
     return uri
 
 def display_wordcloud(request):
-    yt_url = request.POST.get('yt_url')
-    image = create_wordcloud(yt_url)
-    # context = {
-    #     'image': image,
-    #     'url': yt_url
-    # }
-    # TODO: bring url functionality here, and only pass kosher url up
-    if image == 'none':
-        return HttpResponse("Not valid url")
+    import re
+
+    yt_url = request.POST.get('yt_url') # get url from form
+
+    # Allow user to enter a url and we will grab the id with regex [https://gist.github.com/silentsokolov/f5981f314bc006c82a41]
+    regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
+    match = regex.match(yt_url)
+    if not match:
+        response = JsonResponse({"error": "Please enter a valid YouTube URL"})
+        response.status_code = 404 # To announce that the user isn't allowed to publish
+        return response
+    # Get video id from url
+    VIDEO_ID = match.group('id')
+
+    # save url to model
+    YoutubeUrl(yt_url=yt_url).save()
+    # return HttpResponse("Not valid url")
+    image = create_wordcloud(VIDEO_ID)
+
     return HttpResponse(image)
     #return render(request, 'wowordcloud_app/result.html', context)
