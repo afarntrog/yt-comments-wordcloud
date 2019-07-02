@@ -35,15 +35,6 @@ def create_wordcloud(yt_url):
 # See instructions for running these code samples locally:
 # https://developers.google.com/explorer-help/guides/code_samples#python
 
-
-    
-    # Allow user to enter a url and we will grab the id with regex [https://gist.github.com/silentsokolov/f5981f314bc006c82a41]
-    # regex = re.compile(r'(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?(?P<id>[A-Za-z0-9\-=_]{11})')
-    # match = regex.match(yt_url)
-    # if not match:
-    #     messages.success(request, f'ERROR: Please enter a valid YouTube URL')
-    #     return 'none'
-    # VIDEO_ID = match.group('id')
     VIDEO_ID = yt_url
 
 
@@ -163,6 +154,7 @@ def display_wordcloud(request):
         return response
     # Get video id from url
     VIDEO_ID = match.group('id')
+    print(VIDEO_ID)
 
     # save url to model
     YoutubeUrl(yt_url=yt_url).save()

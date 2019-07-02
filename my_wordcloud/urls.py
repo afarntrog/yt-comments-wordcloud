@@ -20,5 +20,5 @@ from wowordcloud_app.views import *
 urlpatterns = [
     path('masteraaron/', admin.site.urls),
     path('', index, name='home'),
-    path('create_cloud', display_wordcloud, name='create_cloud'),
+    path('/create_cloud', display_wordcloud, name='create_cloud'),
 ]
