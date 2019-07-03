@@ -6,13 +6,14 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-django = "*"
+django = "==2.2.3"
 wordcloud = "*"
 google-api-python-client = "*"
 numpy = "*"
 matplotlib = "*"
 django-heroku = "*"
 gunicorn = "*"
+update = "*"
 
 [requires]
 python_version = "3.6"
