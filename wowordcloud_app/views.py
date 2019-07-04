@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from .models import YoutubeUrl
 from django.contrib import messages
 from django.http import JsonResponse # for ajax resonse
+from django.views.decorators.http import require_POST
 # Create your views here.
 
 
@@ -140,6 +141,7 @@ def create_wordcloud(yt_url):
     uri = 'data:image/png;base64,' + urllib.parse.quote(string)
     return uri
 
+@require_POST
 def display_wordcloud(request):
     import re
 
