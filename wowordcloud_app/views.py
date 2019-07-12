@@ -164,4 +164,3 @@ def display_wordcloud(request):
     image = create_wordcloud(VIDEO_ID)
 
     return HttpResponse(image)
-    #return render(request, 'wowordcloud_app/result.html', context)
