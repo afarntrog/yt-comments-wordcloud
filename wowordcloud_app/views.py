@@ -5,8 +5,6 @@ from django.http import JsonResponse # for ajax resonse
 from django.views.decorators.http import require_POST
 # Create your views here.
 
-
-
 def index(request):
     import os
     from os import path

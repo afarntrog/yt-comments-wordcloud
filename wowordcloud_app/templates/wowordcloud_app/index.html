@@ -74,7 +74,7 @@
                   $('#wordcloud_download_image').attr('href', response);
               },
               error: function(response) {
-                $('#msgs').html("<div class='alert alert-danger text-center container'><strong>ERROR: </strong> "+response.responseJSON.error+"</div>");
+                $('#msgs').html("<div class='alert alert-danger text-center container'><strong>ERROR: </strong> " + response.responseJSON.error + "</div>");
               },
           });
           return false;
