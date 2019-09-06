@@ -21,4 +21,6 @@ urlpatterns = [
     path('masteraaron/', admin.site.urls),
     path('', index, name='home'),
     path('create_cloud', display_wordcloud, name='create_cloud'),
+
+    path('task', get_status, name='task'),# used with ajax to check up on task status
 ]
