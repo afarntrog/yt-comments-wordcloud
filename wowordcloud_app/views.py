@@ -3,14 +3,10 @@ from .models import YoutubeUrl
 from django.contrib import messages
 from django.http import JsonResponse # for ajax resonse
 from django.views.decorators.http import require_POST
-<<<<<<< HEAD
 
 # celery
 from .tasks import create_wordcloud
 from celery import current_app # used when checking task status
-=======
-# Create your views here.
->>>>>>> 1780dd7a17583d28f47d2e6a1c4b709ff65ef2a9
 
 def index(request):
     import os
@@ -184,8 +180,4 @@ def get_status(request):
     if task.status == 'SUCCESS':
         response_data['results'] = task.get()
 
-<<<<<<< HEAD
     return JsonResponse(response_data)
-=======
-    return HttpResponse(image)
->>>>>>> 1780dd7a17583d28f47d2e6a1c4b709ff65ef2a9
