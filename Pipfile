@@ -14,12 +14,9 @@ matplotlib = "*"
 django-heroku = "*"
 gunicorn = "*"
 update = "*"
-<<<<<<< HEAD
 celery = "*"
 redis = "*"
-=======
 waitress = "*"
->>>>>>> 1780dd7a17583d28f47d2e6a1c4b709ff65ef2a9
 
 [requires]
 python_version = "3.6"
