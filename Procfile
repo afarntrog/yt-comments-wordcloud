@@ -1,1 +1,1 @@
-web: gunicorn my_wordcloud.wsgi
+web: waitress-serve --port=$PORT my_wordcloud.wsgi:application
