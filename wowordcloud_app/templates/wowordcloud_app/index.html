@@ -51,33 +51,63 @@
             }
 
     </style>
+
+
 <script language="JavaScript">
   $(document).ready(function() {
+
+
+  
       // display overlay while the request is being processed
-      $(document).ajaxStart(function() {
-          $("#loading").show();
-              }).ajaxStop(function() {
-                $("#loading").hide();
-              });
+      // $(document).ajaxStart(function() {
+      //     $("#loading").show();
+
+      //         }).ajaxStop(function() {
+      //           $("#loading").hide();
+      //         });
+
+
       $('#youtube_url_form').submit(function() { // catch the form's submit event
           $.ajax({ // create an AJAX call...
               data: $(this).serialize(), // get the form data
               type: $(this).attr('method'), // GET or POST
               url: $(this).attr('action'), // the file to call
               success: function(response) { // on success..
-                  // On success call the other function
-                  // $('#DIV_CONTAINING_FORM').html(response); // update the DIV 
-                  $('#wordcloud_image').attr('src', response);
-                  $('#wordcloud_download_image').attr('href', response);
+                $("#loading").show();
+
+                // If image url is successful post then loop to check status of celery job
+                var check_status = setInterval(function() {
+                  $.ajax({
+                    url: "{% url 'task' %}",
+                    data: {'image_task_id': response},
+
+                    success: function(image_response) {
+                      if (image_response.task_status == 'SUCCESS') {
+                        $("#loading").hide(); // clear loading modal from page
+
+                        clearInterval(check_status);// Break out of checking be done.
+                        var image_uri = image_response.results; // get encoded image text
+                        $('#wordcloud_image').attr('src', image_uri); // change src to equal image
+                        $('#wordcloud_download_image').attr('href', image_uri); // add it to href so that it can be downloaded
+                      }
+                      else if (image_response.image_task_status == 'FAILURE') {
+                        //an error occurred
+                        alert("An error occurred.")
+                      }
+                        }
+                  })
+                }, 3000);// 10 seconds
               },
               error: function(response) {
-                $('#msgs').html("<div class='alert alert-danger text-center container'><strong>ERROR: </strong> "+response.responseJSON.error+"</div>");
+                $('#msgs').html("<div class='alert alert-dismissible alert-danger text-center container'><strong>ERROR: </strong> "+response.responseJSON.error+"</div>");
               },
           });
           return false;
       });
   });
 </script>
+
+
 </head>
 <body>
 
