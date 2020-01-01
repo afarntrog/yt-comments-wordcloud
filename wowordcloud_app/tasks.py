@@ -1,14 +1,11 @@
 
 from celery import shared_task
 
-@shared_task
-def adding_task(x, y):
-    print("YTFGU")
-    return x + y
 
 
 @shared_task
 def create_wordcloud(yt_url):
+    print("NOT HERE")
     import os
     from os import path
     import json
@@ -34,7 +31,7 @@ def create_wordcloud(yt_url):
     # VIDEO_ID = "nMwbe45OiIg" 
 
     youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, developerKey = DEVELOPER_KEY)
+        api_service_name, api_version,  cache_discovery=False, developerKey = DEVELOPER_KEY)
 
     # Set the current directory
     d = os.path.dirname(__file__)
@@ -49,13 +46,13 @@ def create_wordcloud(yt_url):
             part="snippet,replies",
             maxResults=100,
             videoId=VIDEO_ID,
-            # videoId='ddKQIUsmJpU',#"0Y6-LjDnKD0",
         )
         response = request.execute()
         
 
         # Write the first set of 100 comments to the textFile
         items = response["items"]
+
         for item in items:
             this_item = item["snippet"]
             write_file.write(this_item["topLevelComment"]["snippet"]["textDisplay"])
@@ -68,7 +65,7 @@ def create_wordcloud(yt_url):
         else:
             another_page = False
 
-        while another_page:#nextPageToken:
+        while another_page: #nextPageToken:
             request = youtube.commentThreads().list(
                 part="snippet,replies",
                 maxResults=100,
@@ -78,6 +75,7 @@ def create_wordcloud(yt_url):
             response = request.execute()
 
             items = response["items"]
+
              # Write the rest of 100 comments to the textFile
             for item in items:
                 this_item = item["snippet"]
@@ -92,36 +90,37 @@ def create_wordcloud(yt_url):
             else:
                 another_page = False
 
-
-    # I don't know why, but somtimes the VIDEO_ID gets added, so add VIDEO_ID to STOPWORDS
+    # I don't know why, but sometimes the VIDEO_ID gets added, so add VIDEO_ID to STOPWORDS
     if '-' in VIDEO_ID:
         #parse string so that you get both halves of vid id so can add each one to exclude list
         both_halves = VIDEO_ID.split('-')
         STOPWORDS.update(both_halves)
 
-    # This will be the built in list of words that will not be included in the wordcloud
-    STOPWORDS.update(['quot', 'amp', 'candidate', 'video','search_query','people', 'will', 'https', 'debate', 'br','href','watch', 'youtube',VIDEO_ID])
-    stopwords = STOPWORDS
-    # print(f"The total number of comments ======= {total_comments}")
-    text = open(path.join(d, 'wordcloud_text.txt')).read()
-    wordcloud = WordCloud(background_color='white',width=800, height=600, stopwords=stopwords).generate(text)
+    if len(items) > 0: # Only process commments if there ARE comments on this video
+        # This will be the built in list of words that will not be included in the wordcloud
+        STOPWORDS.update(['quot', 'amp', 'video','search_query', 'https', 'br','href','watch', 'youtube',VIDEO_ID])
+        stopwords = STOPWORDS
+        text = open(path.join(d, 'wordcloud_text.txt')).read()
+        wordcloud = WordCloud(background_color='white',width=800, height=600, stopwords=stopwords).generate(text)
 
-    # Display the generated image:
-    # the matplotlib way:
-    import matplotlib.pyplot as plt
-    import io
-    import urllib, base64
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis("off")
-    # plt.savefig(path.join(d, 'wordcloud_pic.png'))
-    # hello = plt.show()
+        # Display the generated image:
+        # the matplotlib way:
+        import matplotlib.pyplot as plt
+        import io
+        import urllib, base64
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.axis("off")
+        # plt.savefig(path.join(d, 'wordcloud_pic.png'))
+        # hello = plt.show()
 
 
-    # New
-    imgdata = io.BytesIO()
-    plt.savefig(imgdata, format='png')
-    imgdata.seek(0)  # rewind the data
-    string = base64.b64encode(imgdata.read())
+        # New
+        imgdata = io.BytesIO()
+        plt.savefig(imgdata, format='png')
+        imgdata.seek(0)  # rewind the data
+        string = base64.b64encode(imgdata.read())
 
-    uri = 'data:image/png;base64,' + urllib.parse.quote(string)
-    return uri
+        uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+        return uri
+    else:
+        return "noComments" # If the video has 0 comments than it will return this. So that we can display an error to the user

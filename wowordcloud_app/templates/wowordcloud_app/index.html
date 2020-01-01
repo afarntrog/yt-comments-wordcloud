@@ -90,8 +90,12 @@
 
                         clearInterval(check_status);// Break out of checking be done.
                         var image_uri = image_response.results; // get encoded image text
-                        $('#wordcloud_image').attr('src', image_uri); // change src to equal image
-                        $('#wordcloud_download_image').attr('href', image_uri); // add it to href so that it can be downloaded
+                        if (image_uri != 'noComments'){
+                          $('#wordcloud_image').attr('src', image_uri); // change src to equal image
+                          $('#wordcloud_download_image').attr('href', image_uri); // add it to href so that it can be downloaded
+                        }
+                        else
+                        $('#msgs').html("<div class='alert alert-warning text-center container'><strong>Cannot generate Wordcloud: </strong> This video has <strong>0</strong> comments.</div>");
                       }
                       else if (image_response.image_task_status == 'FAILURE') {
                         //an error occurred
