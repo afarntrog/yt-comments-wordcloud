@@ -3,5 +3,5 @@ YouTube Worcloud allows anyone to easily create a Wordcloud from the comments of
 All wordclouds can also be downloaded to *take home*.
 
 
-#### Feel free to clone this repo. Just run `pipenv install`
+#### To use: clone this repo and run `pipenv install`
 #### This app uses Celery and Redis. Celery is used to process tasks in the background and Redis is used as the messaging queue.
